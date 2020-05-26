@@ -2,11 +2,12 @@
 
 Moniter::Moniter()
 {
-    pcap_if_t* alldevs;		// 获取到的设备列表
+    /*pcap_if_t* alldevs;		      // 获取到的设备列表
     int inum;
     int i = 0;
     pcap_t* adhandle;
     char errbuf[PCAP_ERRBUF_SIZE];
+	*/
 
     /* 获取本机设备列表 */
     if (pcap_findalldevs_ex((char*)PCAP_SRC_IF_STRING, NULL, &alldevs, errbuf) == -1)
@@ -16,7 +17,7 @@ Moniter::Moniter()
     }
 
     /* 打印设备列表 */
-    pcap_if_t* d;
+    //pcap_if_t* d;
     for (d = alldevs; d; d = d->next)
     {
         printf("%d. %s", ++i, d->name);
@@ -65,22 +66,50 @@ Moniter::Moniter()
     /* 释放设备列表 */
     pcap_freealldevs(alldevs);
     /* 开始捕获 */
-    pcap_loop(adhandle, 0, packet_handler, NULL);
+	use_pacp_next_ex(adhandle);
+    //pcap_loop(adhandle, 0, packet_handler, NULL);
+
 }
 
-/* 每次捕获到数据包时，自动调用回调函数 */
-void packet_handler(u_char* param, const struct pcap_pkthdr* header, const u_char* pkt_data)
+/*每次捕获到数据包时，自动调用回调函数 */
+/*void packet_handler(u_char* param, const struct pcap_pkthdr* header, const u_char* pkt_data)
 {
     struct tm* ltime;
     char timestr[16];
     time_t local_tv_sec;
 
     /* 将时间戳转换成可识别的格式 */
-    local_tv_sec = header->ts.tv_sec;
+    /*local_tv_sec = header->ts.tv_sec;
     ltime = localtime(&local_tv_sec);
     strftime(timestr, sizeof timestr, "%H:%M:%S", ltime);
     // 打印接收到的数据
     printf("%s,%.6d len:%d\n", timestr, header->ts.tv_usec, header->len);
+}  ;*/
+ 
+/*主要使用pacp_next_ex函数直接获得数据包*/
+void use_pacp_next_ex(pcap_t* adhandle){
+	struct tm *ltime;			//读取数据包的时间
+	char timestr[16];//
+	struct pcap_pkthdr *header; //数据包头
+	const u_char *pkt_data;		//数据包内容
+
+	int res;
+	while ((res = pcap_next_ex(adhandle, &header, &pkt_data)) >= 0) {
+		if (res == 0)
+			/*超时时间到*/
+			continue;
+		/*将时间戳转换为可识别的格式*/
+		time_t local_tv_sec = header->ts.tv_sec;
+		ltime = localtime(&local_tv_sec);
+		strftime(timestr, sizeof timestr, "%H:%M:%S", ltime);
+
+		printf("%s,%.6d len:%d\n", timestr, header->ts.tv_usec,header->len);
+	}
+	if (res == -1) {
+		printf("数据包读取错误：%s\n", pcap_geterr(adhandle));
+		return ;
+	}
+	return;
 }
 
 Moniter::~Moniter()

@@ -6,10 +6,11 @@
 
 void main(int argc, char* argv[])
 {
-	// GetDeviceList GetDL;
+	//GetDeviceList GetDL;
 	//GetAdapterInfo GetAI;
 	Moniter m;
 	/*CmdClient c;
 	c.RunClient();*/
+	//FilterPacket f;
 }
 

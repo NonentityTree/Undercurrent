@@ -143,6 +143,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="CmdClient.cpp" />
+    <ClCompile Include="FilterPacket.cpp" />
     <ClCompile Include="GetAdapterInfo.cpp" />
     <ClCompile Include="GetDeviceList.cpp" />
     <ClCompile Include="Moniter.cpp" />
@@ -150,6 +151,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CmdClient.h" />
+    <ClInclude Include="FilterPacket.h" />
     <ClInclude Include="GetAdapterInfo.h" />
     <ClInclude Include="GetDeviceList.h" />
     <ClInclude Include="Header.h" />
