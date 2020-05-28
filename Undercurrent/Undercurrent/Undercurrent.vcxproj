@@ -147,6 +147,7 @@
     <ClCompile Include="GetAdapterInfo.cpp" />
     <ClCompile Include="GetDeviceList.cpp" />
     <ClCompile Include="Moniter.cpp" />
+    <ClCompile Include="ProtocolAnalysis.cpp" />
     <ClCompile Include="Undercurrent.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -156,6 +157,7 @@
     <ClInclude Include="GetDeviceList.h" />
     <ClInclude Include="Header.h" />
     <ClInclude Include="Moniter.h" />
+    <ClInclude Include="ProtocolAnalysis.h" />
     <ClInclude Include="Undercurrent.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
